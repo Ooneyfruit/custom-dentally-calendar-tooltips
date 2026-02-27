@@ -1,36 +1,36 @@
 {
-  "manifest_version": 3, // Required for Chrome Extensions using Manifest V3
+  "manifest_version": 3,
 
-  "name": "Custom Calendar Tooltips", // Display name in Chrome extensions UI
-  "version": "1.3", // Extension version
-  "description": "Replaces truncated tooltips with custom tooltips on /calendar/day/… pages. Toggle with Alt+L by default.", // Short description for Chrome Web Store
+  "name": "Custom Calendar Tooltips",
+  "version": "1.3",
+  "description": "Replaces truncated tooltips with custom tooltips on /calendar/day/… pages. Toggle with Alt+L by default.",
 
   "icons": {
-    "128": "icon.png" // Icon displayed in the Chrome Extensions menu
+    "128": "icon.png"
   },
 
   "permissions": [
-    "activeTab",         // Allows access to the active tab for scripting
-    "scripting",         // Enables dynamic script injection
-    "webNavigation",     // Required to detect SPA navigation changes
-    "storage"            // Needed to persist user settings (toggle state)
+    "activeTab", 
+    "scripting",      
+    "webNavigation",    
+    "storage"         
   ],
 
   "options_ui": {
-    "page": "ui/options.html", // Options page UI
-    "open_in_tab": false    // Show in popup rather than new tab
+    "page": "ui/options.html", 
+    "open_in_tab": false    
   },
 
   "host_permissions": [
-    "https://app.dentally.co/*" // Match all Dentally app pages (needed for injection + messaging)
+    "https://app.dentally.co/*" 
   ],
 
   "key":  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt2M9T6rsXBnk2P0Dfw4Aw+zBFypeKny6tjtiKtnknvB9l9AIrltpRNZP0U8e8o8pGJibRV1Hu7idCDDTvarSrcoPOngUqu4tWSBlgzwXjD8BzkQ9E/tGpph9zhM/C2PAqE40okMCjeKrMoDOuUFWLaonIe+sFl04kSV+2oAlbnvB5Q2kcw+n2U4EPDRwUp94aJRpp/kN5LNUwF4B95kIgultmgCvpPyYMvFE3wT5FgdhoeY4kdjpcdTPODJkq/3Tt1iPJLx+hAAkuieteTI8O/jXLx8CxxskJqsFzhrJfotiy9rEiYjDYfDVbGNamDM0gbDrJsrJV5byx8iwbanmnwIDAQAB",
 
-  "update_url": "https://storage.googleapis.com/testytester876786.appspot.com/custom-tooltip-update.xml", // URL to check for updates (if side-loaded or enterprise deployed)
+  "update_url": "https://storage.googleapis.com/testytester876786.appspot.com/custom-tooltip-update.xml", 
 
   "background": {
-    "service_worker": "background.js" // Persistent background logic (handles SPA nav detection, install defaults)
+    "service_worker": "background.js" 
   },
 
   "content_scripts": [
@@ -64,3 +64,4 @@
     }
   ]
 }
+
