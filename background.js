@@ -11,6 +11,8 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(details => {
   chrome.tabs.sendMessage(details.tabId, {
     type: 'LOCATION_CHANGED', // Custom message type
     url: details.url          // New URL after navigation
+  }).catch(() => {
+    // Ignore error: content script may not be loaded in this tab yet
   });
 });
 
@@ -28,12 +30,12 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
       const isChromeOS = platform.os === 'cros';
       chrome.storage.sync.set({
         enabled: isChromeOS,
-        visualToggle: false,
-        instantMode: false
+        visualToggle: true,
+        instantMode: true
       }, () => {
         console.log(
           `Default settings applied: enabled = ${isChromeOS}, ` +
-          `visualToggle = true, instantMode = false (OS detected: ${platform.os})`
+          `visualToggle = true, instantMode = true (OS detected: ${platform.os})`
         );
       });
     });

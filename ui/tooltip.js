@@ -68,7 +68,7 @@
   // --- Position the tooltip near the cursor ---
   function positionTip(x, y) {
     tip.style.left = x + 15 + 'px';
-    tip.style.top  = y + 15 + 'px';
+    tip.style.top = y + 15 + 'px';
   }
 
   /**
@@ -127,19 +127,36 @@
   // --- Handle tooltip activation on hover ---
   document.body.addEventListener('mouseover', e => {
     if (!(customTooltipState.active && customTooltipState.enabled)) return;
-    const el = e.target.closest('[data-test-data="calendar-day-appointment"], [title]');
-    if (!el) return;
-    const native = el.getAttribute('title');
+
+    // Eagerly intercept ANY title attribute hovered immediately to suppress native tooltips
+    const elWithTitle = e.target.closest('[title]');
+    if (elWithTitle) {
+      const native = elWithTitle.getAttribute('title');
+      if (native) {
+        elWithTitle.dataset._origTitle = native;
+        elWithTitle.removeAttribute('title');
+      }
+    }
+
+    const el = e.target.closest('[data-test-data="calendar-day-appointment"], [data-_orig-title], [data-original-title]');
+    // Also check if the element we just stripped happens to be our target (or if it just had a title)
+    const targetEl = el || elWithTitle;
+
+    if (!targetEl) return;
+
+    // Ensure we capture the title if it wasn't stripped by the eager check (e.g., dynamically added)
+    const native = targetEl.getAttribute('title');
     if (native) {
-      el.dataset._origTitle = native;
-      el.removeAttribute('title');
+      targetEl.dataset._origTitle = native;
+      targetEl.removeAttribute('title');
     }
+
     if (customTooltipState.instantMode) {
-      showInstant(el, e);
+      showInstant(targetEl, e);
     } else {
-      showClassic(el);
+      showClassic(targetEl);
     }
-  });
+  }, true); // Use capture phase to intercept as early as possible
 
   // --- Update tooltip position or cancel/close tooltip during mouse movement ---
   document.body.addEventListener('mousemove', e => {
@@ -161,7 +178,7 @@
 
   // --- Hide tooltip on mouseout of the target element ---
   document.body.addEventListener('mouseout', e => {
-    const el = e.target.closest('[data-test-data="calendar-day-appointment"], [title]');
+    const el = e.target.closest('[data-test-data="calendar-day-appointment"], [title], [data-_orig-title], [data-original-title]');
     if (el === currentEl) hideTooltip();
   });
 
@@ -175,30 +192,30 @@
   });
 
   // --- Hide tooltip on scroll in classic mode, but reset so small movement can retrigger ---
-window.addEventListener('scroll', () => {
-  if (!customTooltipState.instantMode) {
-    hideTooltip();
+  window.addEventListener('scroll', () => {
+    if (!customTooltipState.instantMode) {
+      hideTooltip();
 
-    // If tooltips are active/enabled, check if still over an element that should show a tooltip
-    if (customTooltipState.active && customTooltipState.enabled) {
-      // Compute client coordinates from lastMouse.pageX/Y
-      const clientX = lastMouse.x - window.pageXOffset;
-      const clientY = lastMouse.y - window.pageYOffset;
-      // Find the element under the pointer
-      const el = document.elementFromPoint(clientX, clientY)?.closest('[data-test-data="calendar-day-appointment"], [title]');
-      if (el) {
-        // Mirror what happens on mouseover: suppress native title attribute
-        const native = el.getAttribute('title');
-        if (native) {
-          el.dataset._origTitle = native;
-          el.removeAttribute('title');
+      // If tooltips are active/enabled, check if still over an element that should show a tooltip
+      if (customTooltipState.active && customTooltipState.enabled) {
+        // Compute client coordinates from lastMouse.pageX/Y
+        const clientX = lastMouse.x - window.pageXOffset;
+        const clientY = lastMouse.y - window.pageYOffset;
+        // Find the element under the pointer
+        const el = document.elementFromPoint(clientX, clientY)?.closest('[data-test-data="calendar-day-appointment"], [title], [data-_orig-title], [data-original-title]');
+        if (el) {
+          // Mirror what happens on mouseover: suppress native title attribute
+          const native = el.getAttribute('title');
+          if (native) {
+            el.dataset._origTitle = native;
+            el.removeAttribute('title');
+          }
+          // Schedule showClassic so that a small movement (within HIDE_RADIUS) will not cancel it
+          showClassic(el);
         }
-        // Schedule showClassic so that a small movement (within HIDE_RADIUS) will not cancel it
-        showClassic(el);
       }
     }
-  }
-}, true);
+  }, true);
 
 
   // --- Export hideTooltip to allow manual external clearing ---

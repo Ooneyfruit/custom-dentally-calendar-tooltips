@@ -1,67 +1,83 @@
 {
   "manifest_version": 3,
-
   "name": "Custom Calendar Tooltips",
   "version": "1.3",
   "description": "Replaces truncated tooltips with custom tooltips on /calendar/day/… pages. Toggle with Alt+L by default.",
-
   "icons": {
     "128": "icon.png"
   },
-
   "permissions": [
-    "activeTab", 
-    "scripting",      
-    "webNavigation",    
-    "storage"         
+    "activeTab",
+    "scripting",
+    "webNavigation",
+    "storage"
   ],
-
   "options_ui": {
-    "page": "ui/options.html", 
-    "open_in_tab": false    
+    "page": "ui/options.html",
+    "open_in_tab": false
   },
-
   "host_permissions": [
-    "https://app.dentally.co/*" 
+    "https://app.dentally.co/*"
   ],
-
-  "key":  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt2M9T6rsXBnk2P0Dfw4Aw+zBFypeKny6tjtiKtnknvB9l9AIrltpRNZP0U8e8o8pGJibRV1Hu7idCDDTvarSrcoPOngUqu4tWSBlgzwXjD8BzkQ9E/tGpph9zhM/C2PAqE40okMCjeKrMoDOuUFWLaonIe+sFl04kSV+2oAlbnvB5Q2kcw+n2U4EPDRwUp94aJRpp/kN5LNUwF4B95kIgultmgCvpPyYMvFE3wT5FgdhoeY4kdjpcdTPODJkq/3Tt1iPJLx+hAAkuieteTI8O/jXLx8CxxskJqsFzhrJfotiy9rEiYjDYfDVbGNamDM0gbDrJsrJV5byx8iwbanmnwIDAQAB",
-
-  "update_url": "https://storage.googleapis.com/testytester876786.appspot.com/custom-tooltip-update.xml", 
-
   "background": {
-    "service_worker": "background.js" 
+    "service_worker": "background.js"
   },
-
   "content_scripts": [
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["utils.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "utils.js"
+      ]
     },
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["state.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "state.js"
+      ]
     },
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["ui/toast.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "ui/toast.js"
+      ]
     },
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["ui/tooltip.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "ui/tooltip.js"
+      ]
     },
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["ui/toggleButton.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "ui/toggleButton.js"
+      ]
     },
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["hotkey.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "hotkey.js"
+      ]
     },
     {
-      "matches": ["https://app.dentally.co/*"],
-      "js": ["navigation.js"]
+      "matches": [
+        "https://app.dentally.co/*"
+      ],
+      "js": [
+        "navigation.js"
+      ]
     }
   ]
 }
-
