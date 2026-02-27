@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tooltip Options</title>
+    <style>
+      /* ... existing styles ... */
+      /* Additional styling for hotkey input */
+      .hotkey-container {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        min-height: 7rem;
+      }
+      #hotkey {
+        width: 200px;
+        padding: 0.5em;
+        font-size: 1rem;
+        cursor: text;
+      }
+      #hotkey-status {
+        font-size: 0.875rem;
+        min-height: 1.25em;
+      }
+      #status {
+        color: #c00;
+        min-height: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Extension Options</h1>
+
+    <label for="toggle">
+      <input type="checkbox" id="toggle" />
+      Enable custom tooltips by default.
+    </label>
+    <br/>
+    <label for="visual-toggle">
+      <input type="checkbox" id="visual-toggle" />
+      Enable visual toggle button on Dentally.
+    </label>
+    <br/>
+    <label for="instant-mode-toggle">
+      <input type="checkbox" id="instant-mode-toggle" />
+      Enable instant‐follow tooltip behaviour.
+    </label>
+
+    <!-- Hotkey setting -->
+    <div class="hotkey-container">
+      <label for="hotkey">Toggle hotkey:</label>
+      <input type="text" id="hotkey" readonly placeholder="Press desired keys" />
+      <small>Default: Alt+L. Avoid common browser/OS shortcuts.</small>
+      <div id="hotkey-status"></div>
+      
+      
+    </div>
+    <div id="status"></div>
+    <button id="save">Save</button>
+    
+    <script src="options.js"></script>
+  </body>
+</html>
