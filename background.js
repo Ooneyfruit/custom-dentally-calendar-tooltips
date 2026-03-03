@@ -27,15 +27,14 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
   // Only set defaults on fresh install, not on updates
   if (reason === 'install') {
     chrome.runtime.getPlatformInfo(platform => {
-      const isChromeOS = platform.os === 'cros';
       chrome.storage.sync.set({
-        enabled: isChromeOS,
-        visualToggle: true,
-        instantMode: true
+        enabled: true,
+        visualToggle: false,
+        instantMode: false
       }, () => {
         console.log(
-          `Default settings applied: enabled = ${isChromeOS}, ` +
-          `visualToggle = true, instantMode = true (OS detected: ${platform.os})`
+          `Default settings applied: enabled = true, ` +
+          `visualToggle = false, instantMode = false (OS detected: ${platform.os})`
         );
       });
     });

@@ -4,13 +4,13 @@
 // toggle and 'hotkey' in the options page
 
 document.addEventListener('DOMContentLoaded', () => {
-  const toggle       = document.getElementById('toggle');
+  const toggle = document.getElementById('toggle');
   const visualToggle = document.getElementById('visual-toggle');
-  const instantMode  = document.getElementById('instant-mode-toggle');
-  const status       = document.getElementById('status');
-  const saveBtn      = document.getElementById('save');
+  const instantMode = document.getElementById('instant-mode-toggle');
+  const status = document.getElementById('status');
+  const saveBtn = document.getElementById('save');
 
-  const hotkeyInput  = document.getElementById('hotkey');
+  const hotkeyInput = document.getElementById('hotkey');
   const hotkeyStatus = document.getElementById('hotkey-status');
 
   // --- Store the initially loaded settings to compare for unsaved changes. ---
@@ -24,10 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Common Chrome/browser shortcuts on Windows/Linux
     'Ctrl+T', 'Ctrl+N', 'Ctrl+W', 'Ctrl+R', 'Ctrl+Shift+N', 'Ctrl+Shift+T', 'Ctrl+Shift+W',
     'Ctrl+Tab', 'Ctrl+Shift+Tab', 'Ctrl+P', 'Ctrl+S', 'Ctrl+O', 'Ctrl+F', 'Ctrl+H',
-    'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+    'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
     // macOS common: use Meta instead of Ctrl
-    'Meta+T','Meta+N','Meta+W','Meta+R','Meta+Shift+N','Meta+Shift+T','Meta+Shift+W',
-    'Meta+Tab','Meta+Shift+Tab','Meta+P','Meta+S','Meta+O','Meta+F','Meta+H', 'Meta+L', 'Meta+M'
+    'Meta+T', 'Meta+N', 'Meta+W', 'Meta+R', 'Meta+Shift+N', 'Meta+Shift+T', 'Meta+Shift+W',
+    'Meta+Tab', 'Meta+Shift+Tab', 'Meta+P', 'Meta+S', 'Meta+O', 'Meta+F', 'Meta+H', 'Meta+L', 'Meta+M'
     // Note: This list is not exhaustive; users may still pick conflicting combos.
   ]);
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (shiftKey) parts.push('Shift');
     const k = key.length === 1 ? key.toUpperCase() : key[0].toUpperCase() + key.slice(1);
     // Exclude if the key is itself a modifier key name
-    if (!['Control','Shift','Alt','Meta'].includes(key)) {
+    if (!['Control', 'Shift', 'Alt', 'Meta'].includes(key)) {
       parts.push(k);
     }
     return parts.join('+');
@@ -66,27 +66,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Load saved settings ---
-  chrome.storage.sync.get({ 
+  chrome.storage.sync.get({
     enabled: true,
-    visualToggle: true,
-    instantMode: true,
-    hotkey: 'Alt+L' 
+    visualToggle: false,
+    instantMode: false,
+    hotkey: 'Alt+L'
   }, data => {
-    initialEnabled      = data.enabled;
+    initialEnabled = data.enabled;
     initialVisualToggle = data.visualToggle;
-    initialInstantMode  = data.instantMode;
-    initialHotkey       = data.hotkey;
+    initialInstantMode = data.instantMode;
+    initialHotkey = data.hotkey;
 
     // Reflect in UI
-    toggle.checked       = initialEnabled;
+    toggle.checked = initialEnabled;
     visualToggle.checked = initialVisualToggle;
-    instantMode.checked  = initialInstantMode;
-    hotkeyInput.value    = initialHotkey;
+    instantMode.checked = initialInstantMode;
+    hotkeyInput.value = initialHotkey;
     // Validate the loaded hotkey
     const v = validateCombo(initialHotkey);
     if (v.ok) {
       hotkeyStatus.textContent = '';
-      hotkeyStatus.classList.remove('error','ok');
+      hotkeyStatus.classList.remove('error', 'ok');
     } else {
       hotkeyStatus.textContent = v.message;
       hotkeyStatus.classList.add('error');
@@ -99,16 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
   toggle.addEventListener('change', () => {
     updateStatus();
   });
-  
+
   visualToggle.addEventListener('change', updateStatus);
   instantMode.addEventListener('change', updateStatus);
 
   // --- When hotkey input is focused, listen for keydown to capture combo. ---
   hotkeyInput.addEventListener('focus', () => {
     hotkeyStatus.textContent = 'Press desired key combination...';
-    hotkeyStatus.classList.remove('ok','error');
+    hotkeyStatus.classList.remove('ok', 'error');
   });
-  
+
   hotkeyInput.addEventListener('keydown', e => {
     e.preventDefault();
     e.stopPropagation();
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateStatus();
   });
-  
+
   // --- If input loses focus without keydown, clear prompt if matching saved. ---
   hotkeyInput.addEventListener('blur', () => {
     // If user hasn't changed to a valid new combo, restore initial or last valid
@@ -140,17 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
       // keep showing error until valid or saved
     } else {
       hotkeyStatus.textContent = '';
-      hotkeyStatus.classList.remove('error','ok');
+      hotkeyStatus.classList.remove('error', 'ok');
     }
     updateStatus();
   });
 
   // --- Handle Save click: store both settings if valid. ---
   saveBtn.addEventListener('click', () => {
-    const enabledVal       = toggle.checked;
-    const visualToggleVal  = visualToggle.checked;
-    const instantVal       = instantMode.checked;
-    const hotkeyVal        = hotkeyInput.value || '';
+    const enabledVal = toggle.checked;
+    const visualToggleVal = visualToggle.checked;
+    const instantVal = instantMode.checked;
+    const hotkeyVal = hotkeyInput.value || '';
     const v = validateCombo(hotkeyVal);
     if (!v.ok) {
       // refuse to save invalid hotkey
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hotkeyStatus.classList.remove('ok');
       return;
     }
-    chrome.storage.sync.set({ 
+    chrome.storage.sync.set({
       enabled: enabledVal,
       visualToggle: visualToggleVal,
       instantMode: instantVal,
@@ -169,23 +169,23 @@ document.addEventListener('DOMContentLoaded', () => {
       initialVisualToggle = visualToggleVal;
       initialInstantMode = instantVal;
       initialHotkey = hotkeyVal;
-      
+
       updateStatus();
     });
   });
 
   function updateStatus() {
-    const enabledChanged = (toggle.checked       !== initialEnabled);
-    const visualChanged  = (visualToggle.checked !== initialVisualToggle);
-    const instantChanged = (instantMode.checked  !== initialInstantMode);
-    const hotkeyChanged  = (hotkeyInput.value    !== initialHotkey);
+    const enabledChanged = (toggle.checked !== initialEnabled);
+    const visualChanged = (visualToggle.checked !== initialVisualToggle);
+    const instantChanged = (instantMode.checked !== initialInstantMode);
+    const hotkeyChanged = (hotkeyInput.value !== initialHotkey);
     if (instantChanged || enabledChanged || visualChanged || hotkeyChanged) {
       status.textContent = 'Unsaved changes.';
       status.classList.add('unsaved');
       status.classList.remove('saved');
     } else {
       status.textContent = '';
-      status.classList.remove('unsaved','saved');
+      status.classList.remove('unsaved', 'saved');
     }
   }
 });
